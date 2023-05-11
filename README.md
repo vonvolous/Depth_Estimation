@@ -22,36 +22,6 @@ year = {2019}
 }
 ```
 
-## ⚙️ Setup
-
-Assuming a fresh [Anaconda](https://www.anaconda.com/download/) distribution, you can install the dependencies with:
-```shell
-conda install pytorch=0.4.1 torchvision=0.2.1 -c pytorch
-pip install tensorboardX==1.4
-conda install opencv=3.3.1   # just needed for evaluation
-```
-We ran our experiments with PyTorch 0.4.1, CUDA 9.1, Python 3.6.6 and Ubuntu 18.04.
-We have also successfully trained models with PyTorch 1.0, and our code is compatible with Python 2.7. You may have issues installing OpenCV version 3.3.1 if you use Python 3.7, we recommend to create a virtual environment with Python 3.6.6 `conda create -n monodepth2 python=3.6.6 anaconda `.
-
-<!-- We recommend using a [conda environment](https://conda.io/docs/user-guide/tasks/manage-environments.html) to avoid dependency conflicts.
-
-We also recommend using `pillow-simd` instead of `pillow` for faster image preprocessing in the dataloaders. -->
-
-
-## 🖼️ Prediction for a single image
-
-You can predict scaled disparity for a single image with:
-
-```shell
-python test_simple.py --image_path assets/test_image.jpg --model_name mono+stereo_640x192
-```
-
-or, if you are using a stereo-trained model, you can estimate metric depth with
-
-```shell
-python test_simple.py --image_path assets/test_image.jpg --model_name mono+stereo_640x192 --pred_metric_depth
-```
-
 **Splits**
 
 The train/test/validation splits are defined in the `splits/` folder.
@@ -75,21 +45,6 @@ This can be changed with the `--log_dir` flag.
 python train.py --model_name mono_model
 ```
 
-**Stereo training:**
-
-Our code defaults to using Zhou's subsampled Eigen training data. For stereo-only training we have to specify that we want to use the full Eigen training set – see paper for details.
-```shell
-python train.py --model_name stereo_model \
-  --frame_ids 0 --use_stereo --split eigen_full
-```
-
-**Monocular + stereo training:**
-```shell
-python train.py --model_name mono+stereo_model \
-  --frame_ids 0 -1 1 --use_stereo
-```
-
-
 ### GPUs
 
 The code can only be run on a single GPU.
@@ -106,18 +61,6 @@ All our experiments were performed on a single NVIDIA Titan Xp.
 | Stereo            | 6GB                     | 8 hours                     |
 | Mono + Stereo     | 11GB                    | 15 hours                    |
 
-
-
-### 💽 Finetuning a pretrained model
-
-Add the following to the training command to load an existing model for finetuning:
-```shell
-python train.py --model_name finetuned_mono --load_weights_folder ~/tmp/mono_model/models/weights_19
-```
-
-### 🔧 Other training options
-
-Run `python train.py -h` (or look at `options.py`) to see the range of other training options, such as learning rates and ablation settings.
 
 ## 👩‍⚖️ License
 Copyright © Niantic, Inc. 2019. Patent Pending.
