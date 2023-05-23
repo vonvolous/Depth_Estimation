@@ -22,19 +22,23 @@ year = {2019}
 }
 ```
 
-**Splits**
 
-The train/test/validation splits are defined in the `splits/` folder.
+## Splits
+
 By default, the code will train a depth model using [Zhou's subset](https://github.com/tinghuiz/SfMLearner) of the standard Eigen split of KITTI, which is designed for monocular training.
-You can also train a model using the new [benchmark split](http://www.cvlibs.net/datasets/kitti/eval_depth.php?benchmark=depth_prediction) or the [odometry split](http://www.cvlibs.net/datasets/kitti/eval_odometry.php) by setting the `--split` flag.
+You can also train a model using the new [benchmark split](http://www.cvlibs.net/datasets/kitti/eval_depth.php?benchmark=depth_prediction) 
+or the [odometry split](http://www.cvlibs.net/datasets/kitti/eval_odometry.php) by setting the `--split` flag.
 
 
-**Custom dataset**
+## Custom dataset
 
-You can train on a custom monocular or stereo dataset by writing a new dataloader class which inherits from `MonoDataset` – see the `KITTIDataset` class in `datasets/kitti_dataset.py` for an example.
+1. Make a new dataloader class which inherits from 'MonoDataset' (example - KITTIDataset)
+2. Make a train/test/validation splits in `splits/` folder for your custom dataset
+3. change details in options.py and trainer.py
+4. add the new dataloader class in __init__.py in `datasets/` folder
 
 
-## ⏳ Training
+## Training
 
 By default models and tensorboard event files are saved to `~/tmp/<model_name>`.
 This can be changed with the `--log_dir` flag.
@@ -45,7 +49,7 @@ This can be changed with the `--log_dir` flag.
 python train.py --model_name mono_model
 ```
 
-### GPUs
+## GPUs
 
 The code can only be run on a single GPU.
 You can specify which GPU to use with the `CUDA_VISIBLE_DEVICES` environment variable:
